@@ -1,0 +1,50 @@
+*** Variables ***
+    ${HomePage}    https://shop.googlemerchandisestore.com/
+    ${Browser}    chrome
+    #----Object-----
+    ${ele_SignUP}
+    ${ele_Sale}
+    ${Edit_InputSearch}
+    ${Edit_InputQuantity}
+    ${btn_ContinuetoCheckout}
+    ${btn_AddToCart}
+    ${btn_Continue}  
+    ${btn_SignedIn}
+    ${btn_Confirm}
+    ${btn_Search}
+    ${btn_Go}
+    #---- Text -----
+    ${Name_Item}    Android Super Hero 3D Framed Art
+    ${Name_Quantity}    2
+    ${Name_BillInformation}    Billing & Shipping Information
+*** Test Cases ***
+GoogleMerchandiseStore
+    Open Browser    ${HomePage}    ${Browser}    #1 Open Browser
+    Click Element    ${SignUP}    #2 Click Tab Sign Up 
+    Click Button    ${btn_SignedIn}    #3 Click Button 'Sign Up' 
+    #4 <Skip> Input Google Account <Skip>
+    #5 ====Check Text == Sign up successfully
+    Wait Until Page Contains    Sign up successfully   timeout=10   Error=I couldn't find the word 'Sign up successfully'
+    Click Element    ${ele_Sale}   #6 Click Tab Sale
+    Click Button    ${btn_Search}    #7 Click Button 'Search'
+    Input Text    ${Edit_InputSearch}     ${Name_Item}   #8 Input Text 'Android Super Hero 3D Framed Art'
+    Click Button    ${btn_Go}    #9 btn_GO is Search 'Name_Item'
+    #10 ====Check Text == Android Super Hero 3D Framed Art
+    Wait Until Page Contains    ${Name_Item}   timeout=10   Error=item not found '${Name_Item}'
+    #11 ====Check Price == Price is $20.00
+    Wait Until Page Contains    $20.00   timeout=3   Error='Android Super Hero 3D Framed Art'Price is not equal to $20.00
+    Input Text    ${Edit_InputQuantity}    ${Name_Quantity}   #12 Input Quantity = 2
+    Click Button    ${btn_AddToCart}   #13 Click 'ADD TO CART'
+    #14 ====Check Price Quantity 2 == $20 + $20 = $40 
+    Wait Until Page Contains    Grand Total: $40.00   timeout=3   Error=Price All is not equal to $40.00 
+    Click Button    ${btn_ContinuetoCheckout}   #15 Click 'Continue to Checkout'
+    #16 ====Check Text == "Billing & Shipping Information"
+    Wait Until Page Contains    ${Name_BillInformation}   timeout=3   Error=No Text "Billing & Shipping Information"
+    #17 <Skip> Input First Name,Last Name , Address , Email ,Phone <Skip>  Shipping Addres And Billing Address
+    Click Button    ${btn_Continue}  #18 Click  'Continue'
+    #19 ====Check Text == There were problems with your registration is incomplete information
+    Wait Until Page Does Not Contain    There were problems with your registration  Error=incomplete information
+    #20 <Skip> Input Payment And Confirm <Skip>
+    Click Button    ${btn_Confirm}   #21 Click  'Continue'
+    #22 ====Check Text == Thank-you 
+    Wait Until Page Contains    Thank-you   timeout=3   Error=I couldn't find the word 'Thank-you'
